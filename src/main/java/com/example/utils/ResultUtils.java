@@ -11,6 +11,13 @@ public class ResultUtils {
 		baseBean.setData(data);
 		return baseBean;
 	}
+	
+	public static <T> BaseBean<T> resultSucceed(String data) {
+		BaseBean<T> baseBean = new BaseBean<>();
+		baseBean.setCode(0);
+		baseBean.setMessage(data);
+		return baseBean;
+	}
 
 	public static <T> BaseBean<T> resultError(String error) {
 		BaseBean<T> baseBean = new BaseBean<>();
@@ -18,4 +25,5 @@ public class ResultUtils {
 		baseBean.setMessage(error);
 		return baseBean;
 	}
+	
 }

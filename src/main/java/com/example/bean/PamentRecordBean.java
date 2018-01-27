@@ -13,18 +13,11 @@ public class PamentRecordBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(unique = true)
 	private int number;
 	private int type;
 	private String date;
 	private Double amount;
 	private int state;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public int getNumber() {
 		return number;
 	}
@@ -55,5 +48,12 @@ public class PamentRecordBean {
 	public void setState(int state) {
 		this.state = state;
 	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 
 }

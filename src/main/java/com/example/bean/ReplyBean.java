@@ -16,12 +16,6 @@ public class ReplyBean {
 	private String info;
 	private int number; 
 	private String date;
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public Long getForumId() {
 		return forumId;
 	}

@@ -1,13 +1,14 @@
 package com.example.controller;
 
-import java.util.List;
+
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bean.AccountBean;
@@ -16,10 +17,8 @@ import com.example.bean.UserBean;
 import com.example.dao.AccountDao;
 import com.example.dao.UserDao;
 import com.example.utils.ResultUtils;
-import com.fasterxml.jackson.databind.deser.Deserializers.Base;
 
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -32,7 +31,8 @@ public class ApiUserController {
 	private AccountDao accountDao;
 
 	@ApiOperation(value = "注册新业主", notes = "")
-	@ApiImplicitParam(name = "accountBean", value = "业主实体对象AccountBean", required = true, dataType = "AccountBean")
+	@ApiImplicitParam(name = "accountBean", value = "业主账户信息对象AccountBean", required = true, dataType = "AccountBean")
+	
 	@RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json")
 	public BaseBean<UserBean> addUser(@RequestBody AccountBean accountBean) {
 		if (accountDao.findAccountByNumber(accountBean.getNumber()) == null) {
@@ -44,23 +44,65 @@ public class ApiUserController {
 			return ResultUtils.resultError("门牌号已存在");
 		}
 	}
-
-	@ApiOperation(value = "删除业主", notes = "")
-	@ApiImplicitParam(name = "number", value = "门牌号", required = true, dataType = "Integer")
-	@RequestMapping(value = "/{number}", method = RequestMethod.GET, produces = "application/json")
-	public BaseBean<UserBean> deleteUser(@PathVariable Integer number) {
-		userDao.delete(userDao.findUserByNumber(number));
-		accountDao.delete(accountDao.findAccountByNumber(number));
-		return ResultUtils.resultSucceed(null);
+	
+	/**
+	 * 修改密码
+	 * @param request 
+	 * @return
+	 */
+	@RequestMapping(value = "/editPass", method = RequestMethod.POST)
+	public BaseBean<AccountBean> editPass(HttpServletRequest request) {
+		String oldPass=request.getParameter("oldPass");
+		String newPass=request.getParameter("newPass");
+		int number=Integer.parseInt(request.getParameter("number"));
+		AccountBean account=accountDao.findAccountByNumber(number);
+		if (account.getPwd().equals(oldPass)) {
+			account.setPwd(newPass);
+			accountDao.save(account);
+			return ResultUtils.resultSucceed("密码修改成功！");
+		}else {
+			return ResultUtils.resultError("旧密码有误！");
+		}
+		
 	}
 
-	@ApiOperation(value = "修改个人信息", notes = "")
-	@ApiImplicitParam(name = "userBean", value = "业主实体对象UserBean", required = true, dataType = "UserBean")
+	@ApiOperation(value = "修改用户个人信息", notes = "")
+	@ApiImplicitParam(name = "userBean", value = "业主用户信息对象UserBean", required = true, dataType = "UserBean")
+	
 	@RequestMapping(value = "/", method = RequestMethod.PUT, produces = "application/json")
-	public UserBean putUser(@RequestBody UserBean userBean) {
-		UserBean userBean2 = userDao.findUserByNumber(userBean.getNumber());
-		userBean2.setName(userBean.getName());
-		userBean2.setTel(userBean.getTel());
-		return userDao.save(userBean2);
+	public BaseBean<UserBean> editUser(@RequestBody UserBean userBean) {
+		UserBean user = userDao.findUserByNumber(userBean.getNumber());
+		user.setName(userBean.getName());
+		user.setTel(userBean.getTel());
+		user.setBalance(userBean.getBalance());
+		user.setSex(userBean.getSex());
+		return ResultUtils.resultSucceed(userDao.save(user));
 	}
+	
+	/**
+	 * 获取用户信息
+	 * @param number
+	 * @return
+	 */
+	@RequestMapping(value = "/{number}", method = RequestMethod.GET)
+	public BaseBean<UserBean> getUser(@PathVariable int number) {
+		UserBean user = userDao.findUserByNumber(number);
+		return ResultUtils.resultSucceed(user);
+	}
+	
+	/**
+	 * 用户充值
+	 * @param request 
+	 * @return
+	 */
+	@RequestMapping(value = "/addMoney", method = RequestMethod.PUT)
+	public BaseBean<AccountBean> addMoney(HttpServletRequest request) {
+		Double money=Double.parseDouble(request.getParameter("money"));
+		int number=Integer.parseInt(request.getParameter("number"));
+		UserBean user=userDao.findUserByNumber(number);
+		user.setBalance(user.getBalance()+money);
+		userDao.save(user);
+		return ResultUtils.resultSucceed("充值成功！当前余额为："+user.getBalance()+"元。");
+	}
+	
 }
