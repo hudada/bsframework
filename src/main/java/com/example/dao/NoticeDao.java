@@ -9,4 +9,5 @@ import com.example.bean.NoticeBean;
 import com.example.bean.UserBean;
 
 public interface NoticeDao extends JpaRepository<NoticeBean, Long> {
+
 }

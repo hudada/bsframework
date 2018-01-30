@@ -1,7 +1,5 @@
 package com.example.controller;
 
-
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,55 +30,76 @@ public class ApiUserController {
 
 	@ApiOperation(value = "注册新业主", notes = "")
 	@ApiImplicitParam(name = "accountBean", value = "业主账户信息对象AccountBean", required = true, dataType = "AccountBean")
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json")
 	public BaseBean<UserBean> addUser(@RequestBody AccountBean accountBean) {
 		if (accountDao.findAccountByNumber(accountBean.getNumber()) == null) {
 			AccountBean save = accountDao.save(accountBean);
 			UserBean userBean = new UserBean();
 			userBean.setNumber(save.getNumber());
+			// 默认性别未知
+			userBean.setSex(2);
 			return ResultUtils.resultSucceed(userDao.save(userBean));
 		} else {
 			return ResultUtils.resultError("门牌号已存在");
 		}
 	}
-	
+
+	@ApiOperation(value = "业主登陆", notes = "")
+	@ApiImplicitParam(name = "accountBean", value = "业主账户信息对象AccountBean", required = true, dataType = "AccountBean")
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
+	public BaseBean<UserBean> userLogin(@RequestBody AccountBean accountBean) {
+		AccountBean accout = accountDao.findAccountByNumber(accountBean.getNumber());
+		if (accout != null) {
+			if (accout.getPwd().equals(accountBean.getPwd())) {
+				UserBean userBean = userDao.findUserByNumber(accountBean.getNumber());
+				return ResultUtils.resultSucceed(userBean);
+			}else {
+				return ResultUtils.resultError("密码错误！");
+			}
+		} else {
+			return ResultUtils.resultError("门牌号不存在或尚未注册！");
+		}
+	}
+
 	/**
 	 * 修改密码
-	 * @param request 
+	 * 
+	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/editPass", method = RequestMethod.POST)
 	public BaseBean<AccountBean> editPass(HttpServletRequest request) {
-		String oldPass=request.getParameter("oldPass");
-		String newPass=request.getParameter("newPass");
-		int number=Integer.parseInt(request.getParameter("number"));
-		AccountBean account=accountDao.findAccountByNumber(number);
+		String oldPass = request.getParameter("oldPass");
+		String newPass = request.getParameter("newPass");
+		int number = Integer.parseInt(request.getParameter("number"));
+		AccountBean account = accountDao.findAccountByNumber(number);
 		if (account.getPwd().equals(oldPass)) {
 			account.setPwd(newPass);
 			accountDao.save(account);
 			return ResultUtils.resultSucceed("密码修改成功！");
-		}else {
+		} else {
 			return ResultUtils.resultError("旧密码有误！");
 		}
-		
+
 	}
 
 	@ApiOperation(value = "修改用户个人信息", notes = "")
 	@ApiImplicitParam(name = "userBean", value = "业主用户信息对象UserBean", required = true, dataType = "UserBean")
-	
-	@RequestMapping(value = "/", method = RequestMethod.PUT, produces = "application/json")
+
+	@RequestMapping(value = "/editUser", method = RequestMethod.POST, produces = "application/json")
 	public BaseBean<UserBean> editUser(@RequestBody UserBean userBean) {
 		UserBean user = userDao.findUserByNumber(userBean.getNumber());
 		user.setName(userBean.getName());
 		user.setTel(userBean.getTel());
-		user.setBalance(userBean.getBalance());
 		user.setSex(userBean.getSex());
 		return ResultUtils.resultSucceed(userDao.save(user));
 	}
-	
+
 	/**
 	 * 获取用户信息
+	 * 
 	 * @param number
 	 * @return
 	 */
@@ -89,20 +108,21 @@ public class ApiUserController {
 		UserBean user = userDao.findUserByNumber(number);
 		return ResultUtils.resultSucceed(user);
 	}
-	
+
 	/**
 	 * 用户充值
-	 * @param request 
+	 * 
+	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "/addMoney", method = RequestMethod.PUT)
-	public BaseBean<AccountBean> addMoney(HttpServletRequest request) {
-		Double money=Double.parseDouble(request.getParameter("money"));
-		int number=Integer.parseInt(request.getParameter("number"));
-		UserBean user=userDao.findUserByNumber(number);
-		user.setBalance(user.getBalance()+money);
+	@RequestMapping(value = "/addMoney/{money}/{number}", method = RequestMethod.PUT)
+	public BaseBean<AccountBean> addMoney(@PathVariable String number,@PathVariable String money) {
+		Double m = Double.parseDouble(money);
+		int n= Integer.parseInt(number);
+		UserBean user = userDao.findUserByNumber(n);
+		user.setBalance(user.getBalance() + m);
 		userDao.save(user);
-		return ResultUtils.resultSucceed("充值成功！当前余额为："+user.getBalance()+"元。");
+		return ResultUtils.resultSucceed("充值成功！当前余额为：" + user.getBalance() + "元。");
 	}
-	
+
 }

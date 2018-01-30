@@ -17,6 +17,7 @@ public class ForumBean {
 	private int number; 
 	private String date;
 	private int state;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -47,6 +48,11 @@ public class ForumBean {
 	public void setState(int state) {
 		this.state = state;
 	}
-
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 }

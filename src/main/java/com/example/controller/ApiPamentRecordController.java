@@ -33,11 +33,11 @@ public class ApiPamentRecordController {
 	 * @param id 缴费记录id
 	 * @return
 	 */
-	@RequestMapping(value = "/editState/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/editState/{id}", method = RequestMethod.PUT)
 	public BaseBean<String> editRecordState(@PathVariable Long id) {
 		PamentRecordBean recordBean=payDao.findOne(id);
 		if (recordBean.getState()==1) {
-			return ResultUtils.resultSucceed("该账单已缴清,请勿重复缴费！");
+			return ResultUtils.resultError("该账单已缴清,请勿重复缴费！");
 		}else {
 			UserBean userbean=userDao.findUserByNumber(recordBean.getNumber());
 			if (userbean.getBalance()>=recordBean.getAmount()) {
