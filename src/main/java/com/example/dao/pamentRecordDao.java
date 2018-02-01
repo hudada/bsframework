@@ -12,4 +12,10 @@ import com.example.bean.PamentRecordBean;
 public interface pamentRecordDao extends JpaRepository<PamentRecordBean, Long> {
 	@Query("from PamentRecordBean p where p.number=:number")
     List<PamentRecordBean> findAccountByNumber(@Param("number") Integer number);
+	
+	@Query("from PamentRecordBean p where p.type=:type")
+    List<PamentRecordBean> findAccountByType(@Param("type") Integer type);
+	
+	@Query("from PamentRecordBean p where p.state=:state")
+    List<PamentRecordBean> findAccountByState(@Param("state") Integer state);
 }

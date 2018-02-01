@@ -2,6 +2,8 @@ package com.example.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.WebSecurityConfig;
 import com.example.bean.AccountBean;
 import com.example.bean.AdminBean;
 import com.example.bean.BaseBean;
@@ -62,10 +65,11 @@ public class UserController {
 	@ApiImplicitParam(name = "adminBean", value = "管理员对象AdminBean", required = true, dataType = "AdminBean")
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-	public BaseBean<String> userLogin(@RequestBody AdminBean adminBean) {
+	public BaseBean<String> userLogin(@RequestBody AdminBean adminBean,HttpSession session) {
 		AdminBean admin = adminDao.findAdminBeanByNumber(adminBean.getAdminCode());
 		if (admin != null) {
 			if (admin.getPwd().equals(adminBean.getPwd())) {
+				session.setAttribute(WebSecurityConfig.SESSION_KEY, adminBean);
 				return ResultUtils.resultSucceed("登陆成功");
 			}else {
 				return ResultUtils.resultError("密码错误！");
