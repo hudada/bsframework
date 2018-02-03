@@ -57,7 +57,7 @@ public class UserController {
 			userBean.setSex(2);
 			return ResultUtils.resultSucceed(userDao.save(userBean));
 		} else {
-			return ResultUtils.resultError("门牌号已存在");
+			return ResultUtils.resultError("账号已存在");
 		}
 	}
 	
@@ -88,7 +88,7 @@ public class UserController {
 			accountDao.save(accountBean);
 			return ResultUtils.resultSucceed("用户密码充值成功！默认密码：111111！");
 		} else {
-			return ResultUtils.resultError("门牌号不存在");
+			return ResultUtils.resultError("账号不存在");
 		}
 	}
 	

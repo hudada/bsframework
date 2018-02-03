@@ -41,7 +41,7 @@ public class ApiUserController {
 			userBean.setSex(2);
 			return ResultUtils.resultSucceed(userDao.save(userBean));
 		} else {
-			return ResultUtils.resultError("门牌号已存在");
+			return ResultUtils.resultError("该账号已存在！");
 		}
 	}
 
@@ -59,7 +59,7 @@ public class ApiUserController {
 				return ResultUtils.resultError("密码错误！");
 			}
 		} else {
-			return ResultUtils.resultError("门牌号不存在或尚未注册！");
+			return ResultUtils.resultError("账号不存在或尚未注册！");
 		}
 	}
 
@@ -91,10 +91,19 @@ public class ApiUserController {
 	@RequestMapping(value = "/editUser", method = RequestMethod.POST, produces = "application/json")
 	public BaseBean<UserBean> editUser(@RequestBody UserBean userBean) {
 		UserBean user = userDao.findUserByNumber(userBean.getNumber());
-		user.setName(userBean.getName());
-		user.setTel(userBean.getTel());
-		user.setSex(userBean.getSex());
-		return ResultUtils.resultSucceed(userDao.save(user));
+		if (user!=null) {
+			user.setName(userBean.getName());
+			user.setTel(userBean.getTel());
+			user.setSex(userBean.getSex());
+			user.setDong(userBean.getDong());
+			user.setDan(userBean.getDan());
+			user.setHao(userBean.getHao());
+			return ResultUtils.resultSucceed(userDao.save(user));
+		}else {
+			return ResultUtils.resultError("业主不存在！");
+		}
+		
+	
 	}
 
 	/**

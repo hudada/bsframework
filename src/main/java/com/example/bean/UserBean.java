@@ -12,11 +12,39 @@ public class UserBean {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	// 账号
 	@Column(unique = true)
 	private String number;
 	private String name;
 	private String tel;
 	private int sex;
+	private String Dong;
+	private String Dan;
+	private String Hao;
+	public String getDong() {
+		return Dong;
+	}
+
+	public void setDong(String dong) {
+		Dong = dong;
+	}
+
+	public String getDan() {
+		return Dan;
+	}
+
+	public void setDan(String dan) {
+		Dan = dan;
+	}
+
+	public String getHao() {
+		return Hao;
+	}
+
+	public void setHao(String hao) {
+		Hao = hao;
+	}
+
 	// 钱包余额
 	private double balance;
 
