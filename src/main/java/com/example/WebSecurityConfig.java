@@ -24,11 +24,9 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
 		InterceptorRegistration addInterceptor = registry.addInterceptor(getSecurityInterceptor());
 
 		// 排除配置
-		addInterceptor.excludePathPatterns("/error");
-		addInterceptor.excludePathPatterns("/page/login");
-		addInterceptor.excludePathPatterns("/user/login");
+		addInterceptor.excludePathPatterns("/login");
+		addInterceptor.excludePathPatterns("/dologin");
 		addInterceptor.excludePathPatterns("/api/**");
-
 		// 拦截配置
 		addInterceptor.addPathPatterns("/**");
 	}
@@ -43,7 +41,7 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
 				return true;}
 
 			// 跳转登录
-			String url = "/page/login";
+			String url = "/login";
 			response.sendRedirect(url);
 			return false;
 		}

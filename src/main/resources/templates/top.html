@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"></meta>
+<title>物业管理平台</title>
+<style type="text/css">
+body {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+.page_top {
+	height: 90px;
+	width: 100%;
+}
+
+.page_top h1 {
+	margin: 0 0 0 25px;
+	padding-top: 25px;
+}
+
+.page_top div {
+	position: absolute;
+	right: 25px;
+	top: 30px;
+}
+</style>
+</head>
+<body>
+
+	<div class="page_top">
+		<h1>物业管理平台</h1>
+		<div>
+			<label th:text="${name}"></label>
+			<button onclick="loginOut()">退出登录</button>
+		</div>
+	</div>
+
+	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	<script type="text/javascript">
+		function loginOut() {
+			window.open('/logout','_top')
+		}
+	</script>
+</body>
+</html>

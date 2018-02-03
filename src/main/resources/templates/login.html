@@ -57,7 +57,7 @@ body {
 			}
 			;
 			$.ajax({
-				url : "/user/login",
+				url : "/dologin",
 				type : "POST",
 				datatype : "JSON",
 				contentType : "application/json;charset=utf-8",
@@ -65,7 +65,7 @@ body {
 				success : function(obj) {
 					if (obj.code == 0) {
 						alert(obj.message);
-						window.location.href = "/page/";
+						window.location.href = "/";
 					} else {
 						$("#lb_tip").html(obj.message)
 					}

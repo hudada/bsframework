@@ -45,6 +45,11 @@ public class PageUserController {
 		return "usertable";
 	}
 
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String addPage() {
+		return "useradd";
+	}
+
 	// 添加用户
 	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
 	public BaseBean<UserBean> addUser(@RequestBody UserBean userBean) {
