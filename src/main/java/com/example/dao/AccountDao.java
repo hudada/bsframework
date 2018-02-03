@@ -9,5 +9,5 @@ import com.example.bean.UserBean;
 
 public interface AccountDao extends JpaRepository<AccountBean, Long> {
 	@Query("from AccountBean b where b.number=:number")
-    AccountBean findAccountByNumber(@Param("number") Integer number);
+    AccountBean findAccountByNumber(@Param("number") String number);
 }

@@ -56,7 +56,7 @@ public class PamentRecordController {
 
 	@ApiOperation(value = "查询指定用户缴费记录", notes = "")
 	@RequestMapping(value = "/getRecordsByNumber/{number}", method = RequestMethod.GET)
-	public BaseBean<List<PamentRecordBean>> getRecordsByNumber(@PathVariable Integer number) {
+	public BaseBean<List<PamentRecordBean>> getRecordsByNumber(@PathVariable String number) {
 		List<PamentRecordBean> record = payDao.findAccountByNumber(number);
 		return ResultUtils.resultSucceed(record);
 	}

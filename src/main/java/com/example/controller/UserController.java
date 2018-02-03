@@ -45,7 +45,7 @@ public class UserController {
 
 	@ApiOperation(value = "创建新业主（默认密码：111111）", notes = "")
 	@RequestMapping(value = "/{number}", method = RequestMethod.PUT)
-	public BaseBean<UserBean> addUser(@PathVariable Integer number) {
+	public BaseBean<UserBean> addUser(@PathVariable String number) {
 		if (accountDao.findAccountByNumber(number) == null) {
 			AccountBean accountBean=new AccountBean();
 			accountBean.setNumber(number);
@@ -81,7 +81,7 @@ public class UserController {
 	
 	@ApiOperation(value = "用户密码重置（默认密码：111111）", notes = "")
 	@RequestMapping(value = "/editPwd/{number}", method = RequestMethod.PUT)
-	public BaseBean<String> editUserPwd(@PathVariable Integer number) {
+	public BaseBean<String> editUserPwd(@PathVariable String number) {
 		if (accountDao.findAccountByNumber(number) != null) {
 			AccountBean accountBean=accountDao.findAccountByNumber(number);
 			accountBean.setPwd("111111");
@@ -94,7 +94,7 @@ public class UserController {
 	
 	@ApiOperation(value = "获取指定用户信息", notes = "")
 	@RequestMapping(value = "/getUser/{number}", method = RequestMethod.GET)
-	public BaseBean<UserBean> getUser(@PathVariable Integer number) {
+	public BaseBean<UserBean> getUser(@PathVariable String number) {
 		if (userDao.findUserByNumber(number) != null) {
 			return ResultUtils.resultSucceed(userDao.findUserByNumber(number));
 		} else {

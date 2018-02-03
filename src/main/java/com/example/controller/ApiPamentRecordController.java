@@ -62,7 +62,7 @@ public class ApiPamentRecordController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{number}", method = RequestMethod.GET)
-	public BaseBean<List<PamentRecordBean>> getRecords(@PathVariable Integer number) {
+	public BaseBean<List<PamentRecordBean>> getRecords(@PathVariable String number) {
 		List<PamentRecordBean> record = payDao.findAccountByNumber(number);
 		return ResultUtils.resultSucceed(record);
 	}

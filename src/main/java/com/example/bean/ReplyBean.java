@@ -14,7 +14,7 @@ public class ReplyBean {
 	private Long id;
 	private Long forumId;
 	private String info;
-	private int number; 
+	private String number; 
 	private String date;
 	public Long getForumId() {
 		return forumId;
@@ -28,10 +28,10 @@ public class ReplyBean {
 	public void setInfo(String info) {
 		this.info = info;
 	}
-	public int getNumber() {
+	public String getNumber() {
 		return number;
 	}
-	public void setNumber(int number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 	public String getDate() {

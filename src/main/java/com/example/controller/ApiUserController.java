@@ -73,7 +73,7 @@ public class ApiUserController {
 	public BaseBean<AccountBean> editPass(HttpServletRequest request) {
 		String oldPass = request.getParameter("oldPass");
 		String newPass = request.getParameter("newPass");
-		int number = Integer.parseInt(request.getParameter("number"));
+		String number = request.getParameter("number");
 		AccountBean account = accountDao.findAccountByNumber(number);
 		if (account.getPwd().equals(oldPass)) {
 			account.setPwd(newPass);
@@ -104,7 +104,7 @@ public class ApiUserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{number}", method = RequestMethod.GET)
-	public BaseBean<UserBean> getUser(@PathVariable int number) {
+	public BaseBean<UserBean> getUser(@PathVariable String number) {
 		UserBean user = userDao.findUserByNumber(number);
 		return ResultUtils.resultSucceed(user);
 	}
@@ -118,7 +118,7 @@ public class ApiUserController {
 	@RequestMapping(value = "/addMoney/{money}/{number}", method = RequestMethod.PUT)
 	public BaseBean<AccountBean> addMoney(@PathVariable String number,@PathVariable String money) {
 		Double m = Double.parseDouble(money);
-		int n= Integer.parseInt(number);
+		String n= number;
 		UserBean user = userDao.findUserByNumber(n);
 		user.setBalance(user.getBalance() + m);
 		userDao.save(user);

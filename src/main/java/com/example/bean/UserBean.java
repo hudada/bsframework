@@ -13,18 +13,18 @@ public class UserBean {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(unique = true)
-	private int number;
+	private String number;
 	private String name;
 	private String tel;
 	private int sex;
 	// 钱包余额
 	private double balance;
 
-	public int getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 

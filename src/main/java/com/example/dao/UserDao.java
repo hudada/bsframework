@@ -9,5 +9,5 @@ import com.example.bean.UserBean;
 public interface UserDao extends JpaRepository<UserBean, Long> {
 
     @Query("from UserBean b where b.number=:number")
-    UserBean findUserByNumber(@Param("number") Integer number);
+    UserBean findUserByNumber(@Param("number") String number);
 }
