@@ -4,8 +4,7 @@
 <meta charset="utf-8"></meta>
 <style type="text/css">
 table.altrowstable {
-	font-family: verdana, arial, sans-serif;
-	font-size: 22px;
+	font-size: 18px;
 	color: #333333;
 	border-width: 1px;
 	border-color: #a9c6c9;
@@ -15,8 +14,9 @@ table.altrowstable {
 table.altrowstable th {
 	border-width: 1px;
 	padding: 8px;
-	width: 1px;
-	white-space: nowrap;
+	max-width:600px;
+	min-width:100px;
+	table-layout:auto;
 	border-style: solid;
 	border-color: #a9c6c9;
 }
@@ -38,27 +38,28 @@ table.altrowstable td {
 </style>
 </head>
 <body>
-	<div style="float: left; margin-top: 30px; margin-left: 50px">
+	<div style=" margin-top: 30px; margin-left: 50px">
 		<table class="altrowstable" id="alternatecolor">
 			<tr>
-				<th>用户名</th>
-				<th>昵称</th>
-				<th>电话</th>
-				<th>性别</th>
-				<th>栋数</th>
-				<th>单元</th>
-				<th>门牌号</th>
+				<th>账号</th>
+				<th>金额</th>
+				<th>类别</th>
+				<th>是否缴纳</th>
+				<th>时间</th>
 				<th>操作</th>
 			</tr>
-			<tr th:each="user:${list}">
-				<th th:text="${user.number}">number</th>
-				<th th:text="${user.name}">name</th>
-				<th th:text="${user.tel}">tel</th>
-				<th th:text="${user.sex}">sex</th>
-				<th th:text="${user.Dong}">Dong栋</th>
-				<th th:text="${user.Dan}">Dan单元</th>
-				<th th:text="${user.Hao}">Hao号</th>
-				<th><a onclick="">修改</a> <a onclick="">删除</a></th>
+			<tr th:each="pament:${list}">
+				<th th:text="${pament.number}">number</th>
+				<th th:text="${pament.amount}">amount</th>
+				<th th:switch="${pament.type}"><label th:case="0">水费</label> <label
+					th:case="1">电费</label> <label th:case="2">燃气费</label> <label
+					th:case="3">停车费</label> <label th:case="4">物管费</label></th>
+				<th th:switch="${pament.state}"><label th:case="0">否</label> <label
+					th:case="1">是</label></th>
+				<th th:text="${pament.date}">
+				</th>
+				<th><a th:onclick="'javascript:a_edit(\''+${pament.number}+'\')'">修改</a>
+					<a th:onclick="'javascript:a_delete(\''+${pament.number}+'\')'">删除</a></th>
 			</tr>
 		</table>
 	</div>
@@ -94,9 +95,24 @@ table.altrowstable td {
 			var tab_w = $("#alternatecolor").width();
 			$("#div_action").css("width", tab_w);
 		});
-		
-		function btn_add(){
+
+		function btn_add() {
 			window.location.href = "/page/user/add";
+		}
+
+		function a_edit(id) {
+			window.location.href = "/page/user/edit/" + id;
+		}
+		function a_delete(id) {
+			if (confirm("是否确认删除")) {
+				$.get("/page/user/detele/" + id, function(obj) {
+					if (obj.code == 0) {
+						window.location.href = "/page/user/table";
+					} else {
+						alert("删除失败");
+					}
+				});
+			}
 		}
 	</script>
 </body>

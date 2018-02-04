@@ -41,8 +41,12 @@ table.altrowstable td {
 	<div style="margin-top: 30px; margin-left: 50px">
 		<table class="altrowstable" id="alternatecolor">
 			<tr>
-				<th>用户名</th>
-				<th><input id="ipt_number" type="text" placeholder="请输入用户名" /></th>
+				<th>账号</th>
+				<th><input id="ipt_number" type="text" placeholder="请输入账号" /></th>
+			</tr>
+			<tr>
+				<th>昵称</th>
+				<th><input id="ipt_name" type="text" placeholder="请输入昵称" /></th>
 			</tr>
 			<tr>
 				<th>电话</th>
@@ -88,6 +92,7 @@ table.altrowstable td {
 
 		function btn_ok() {
 			var number = $("#ipt_number").val();
+			var name = $("#ipt_name").val();
 			var tel = $("#ipt_tel").val();
 			var sex = $("input[name='sex']:checked").val();
 			var dong = $("#ipt_dong").val();
@@ -99,10 +104,9 @@ table.altrowstable td {
 				return;
 			}
 			
-			var data = '{"number" : "' + number + '","tel" :"' + tel
-				+ '","sex" :"' + sex + '","Dong" :"' + dong
-				+ '","Dan" :"' + dan + '","Hao" :"' + hao + '" }';
-				alert(data)
+			var data = '{"number" : "' + number + '","name":"'+name+'","tel" :"' + tel
+				+ '","sex" :"' + sex + '","dong" :"' + dong
+				+ '","dan" :"' + dan + '","hao" :"' + hao + '" }';
 			$.ajax({
 				url : "/page/user/add",
 				type : "POST",
@@ -111,7 +115,6 @@ table.altrowstable td {
 				data : data,
 				success : function(obj) {
 					if (obj.code == 0) {
-						alert(obj.message);
 						btn_cancel();
 					} else {
 						alert(obj.message);

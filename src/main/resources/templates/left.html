@@ -29,10 +29,10 @@ body {
 		<a target="content" href="/page/user/table">住户管理</a>
 	</div>
 	<div class="div_item">
-		<a target="content" href="/page/user/table">公告管理</a>
+		<a target="content" href="/page/notice/table">公告管理</a>
 	</div>
 	<div class="div_item">
-		<a target="content" href="/page/user/table">缴费管理</a>
+		<a target="content" href="/page/record/table">缴费管理</a>
 	</div>
 	<div class="div_item">
 		<a target="content" href="/page/user/table">论坛管理</a>
@@ -41,13 +41,8 @@ body {
 	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			var pl_w = $(".page_left").width();
-			$(".page_right").css("left", pl_w);
 
 		});
-		function loginOut() {
-			window.location.href = "/logout";
-		}
 	</script>
 </body>
 </html>

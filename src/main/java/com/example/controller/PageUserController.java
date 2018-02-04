@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -42,16 +43,23 @@ public class PageUserController {
 	@RequestMapping(value = "/table", method = RequestMethod.GET)
 	public String table(ModelMap map) {
 		map.addAttribute("list", userDao.findAll());
-		return "usertable";
+		return "user/usertable";
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addPage() {
-		return "useradd";
+		return "user/useradd";
+	}
+	
+	@RequestMapping(value = "/edit/{number}", method = RequestMethod.GET)
+	public String editPage(@PathVariable String number,ModelMap map) {
+		map.addAttribute("userBean", userDao.findUserByNumber(number));
+		return "user/useredit";
 	}
 
 	// 添加用户
 	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
 	public BaseBean<UserBean> addUser(@RequestBody UserBean userBean) {
 		if (accountDao.findAccountByNumber(userBean.getNumber()) == null) {
 			AccountBean accountBean = new AccountBean();
@@ -65,19 +73,26 @@ public class PageUserController {
 	}
 
 	// 修改用户
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, produces = "application/json")
-	public BaseBean<UserBean> editUser(@RequestBody UserBean userBean) {
-		UserBean user = userDao.findUserByNumber(userBean.getNumber());
+	@RequestMapping(value = "/edit/{number}", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public BaseBean<UserBean> editUser(@PathVariable String number,@RequestBody UserBean userBean) {
+		UserBean user = userDao.findUserByNumber(number);
 		user.setName(userBean.getName());
 		user.setSex(userBean.getSex());
 		user.setTel(userBean.getTel());
 		user.setBalance(userBean.getBalance());
+		user.setDong(userBean.getDong());
+		user.setDan(userBean.getDan());
+		user.setHao(userBean.getHao());
 		return ResultUtils.resultSucceed(userDao.save(user));
 	}
 
 	// 删除用户
 	@RequestMapping(value = "/detele/{number}", method = RequestMethod.GET)
+	@ResponseBody
 	public BaseBean<UserBean> delUser(@PathVariable String number) {
+		AccountBean a = accountDao.findAccountByNumber(number);
+		accountDao.delete(a);
 		UserBean user = userDao.findUserByNumber(number);
 		userDao.delete(user);
 		return ResultUtils.resultSucceed("");
