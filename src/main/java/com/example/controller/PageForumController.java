@@ -22,13 +22,16 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.example.bean.AccountBean;
 import com.example.bean.AdminBean;
 import com.example.bean.BaseBean;
-import com.example.bean.NoticeBean;
+import com.example.bean.ForumAndReplyCount;
+import com.example.bean.ForumBean;
 import com.example.bean.PamentRecordBean;
+import com.example.bean.ReplyBean;
 import com.example.bean.UserBean;
 import com.example.dao.AccountDao;
 import com.example.dao.AdminDao;
+import com.example.dao.ForumDao;
+import com.example.dao.ReplyDao;
 import com.example.dao.UserDao;
-import com.example.dao.pamentRecordDao;
 import com.example.utils.ResultUtils;
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -37,55 +40,43 @@ import io.swagger.annotations.ApiOperation;
 import com.example.WebSecurityConfig;
 
 @Controller
-@RequestMapping(value = "/page/record")
-public class PagePamentController {
+@RequestMapping(value = "/page/forum")
+public class PageForumController {
 
 	@Autowired
-	private pamentRecordDao payDao;
+	private ForumDao forumDao;
 	@Autowired
-	private UserDao userDao;
+	private ReplyDao replyDao;
 
 	@RequestMapping(value = "/table", method = RequestMethod.GET)
 	public String table(ModelMap map) {
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		List<PamentRecordBean> list = payDao.findOrderByState();
-		for(PamentRecordBean bean:list) {
-			bean.setDate(format.format(new Date(Long.parseLong(bean.getDate()))));
+		List<ForumAndReplyCount> result = new ArrayList<>();
+		List<ForumBean> forums=forumDao.findAll();
+		for (ForumBean forumBean : forums) {
+			ForumAndReplyCount forumAndReplyCount = new ForumAndReplyCount();
+			forumAndReplyCount.setId(forumBean.getId());
+			forumAndReplyCount.setTitle(forumBean.getTitle());
+			forumAndReplyCount.setInfo(forumBean.getInfo());
+			forumAndReplyCount.setNumber(forumBean.getNumber());
+			forumAndReplyCount.setDate(format.format(new Date(Long.parseLong(forumBean.getDate()))));
+			forumAndReplyCount.setState(forumBean.getState());
+			int count = replyDao.findCountByForumId(forumBean.getId()+"");
+			forumAndReplyCount.setCount(count);
+			result.add(forumAndReplyCount);
 		}
-		map.addAttribute("list", list);
-		return "pamentRecord/table";
-	}
-
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String addPage(ModelMap map) {
-		map.addAttribute("list",userDao.findAll());
-		return "pamentRecord/add";
-	}
-	
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public String editPage(@PathVariable Long id,ModelMap map) {
-		map.addAttribute("pament", payDao.findOne(id));
-		return "pamentRecord/edit";
-	}
-
-	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public BaseBean<PamentRecordBean> addUser(@RequestBody PamentRecordBean pamentRecordBean) {
-		pamentRecordBean.setDate(new Date().getTime()+"");
-		return ResultUtils.resultSucceed(payDao.save(pamentRecordBean));
-	}
-
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public BaseBean<PamentRecordBean> editUser(@RequestBody PamentRecordBean pamentRecordBean) {
-		pamentRecordBean.setDate(new Date().getTime()+"");
-		return ResultUtils.resultSucceed(payDao.save(pamentRecordBean));
+		map.addAttribute("list", result);
+		return "forum/table";
 	}
 
 	@RequestMapping(value = "/detele/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public BaseBean<PamentRecordBean> delUser(@PathVariable Long id) {
-		payDao.delete(id);
+	public BaseBean<ForumBean> delUser(@PathVariable String id) {
+		List<ReplyBean> list = replyDao.findReplayByForumId(id);
+		for(ReplyBean bean : list) {
+			replyDao.delete(bean.getId());
+		}
+		forumDao.delete(Long.parseLong(id));
 		return ResultUtils.resultSucceed("");
 	}
 }

@@ -40,7 +40,10 @@ public class ReplyBean {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	public Long getId() {
+		return id;
+	}
 	
-
+	
 
 }

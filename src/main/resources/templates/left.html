@@ -8,6 +8,7 @@ body {
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	background-color: #4f79b0;
 }
 
 .div_item {
@@ -20,13 +21,19 @@ body {
 	height: 50px;
 	text-align: center;
 	line-height: 50px;
+	color:#FFFFFF;
+	font-size:18px;
+	font-family: arial,sans-serif;
 	text-decoration: none;
 }
+
+a:hover {color:#101B5F;}
+
 </style>
 </head>
 <body>
 	<div class="div_item">
-		<a target="content" href="/page/user/table">住户管理</a>
+		<a target="content" href="/page/user/table/0">住户管理</a>
 	</div>
 	<div class="div_item">
 		<a target="content" href="/page/notice/table">公告管理</a>
@@ -35,7 +42,7 @@ body {
 		<a target="content" href="/page/record/table">缴费管理</a>
 	</div>
 	<div class="div_item">
-		<a target="content" href="/page/user/table">论坛管理</a>
+		<a target="content" href="/page/forum/table">论坛管理</a>
 	</div>
 
 	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>

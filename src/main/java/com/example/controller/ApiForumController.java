@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -23,6 +24,7 @@ import com.example.bean.UserBean;
 import com.example.dao.ForumDao;
 import com.example.dao.ReplyDao;
 import com.example.utils.ResultUtils;
+import com.mysql.fabric.xmlrpc.base.Data;
 
 @RestController
 @RequestMapping(value = "/api/forum")
@@ -67,6 +69,17 @@ public class ApiForumController {
 
 		List<ReplyBean> result=replyDao.findReplayByForumId(id);
 		return ResultUtils.resultSucceed(result);
+	}
+	
+	/**
+	 * 创建新帖子
+	 * @return
+	 */
+	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+	public BaseBean<ForumBean> addForum(@RequestBody ForumBean forumBean) {
+		forumBean.setDate(new Date().getTime()+"");
+		forumDao.save(forumBean);
+		return ResultUtils.resultSucceed("发布成功");
 	}
 	
 	/**

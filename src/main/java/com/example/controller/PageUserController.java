@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.annotations.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,11 +41,15 @@ public class PageUserController {
 	private UserDao userDao;
 	@Autowired
 	private AccountDao accountDao;
+	private int size = 50;
 
 	// 返回用户表信息
-	@RequestMapping(value = "/table", method = RequestMethod.GET)
-	public String table(ModelMap map) {
-		map.addAttribute("list", userDao.findAll());
+	@RequestMapping(value = "/table/{page}", method = RequestMethod.GET)
+	public String table(@PathVariable int page,ModelMap map) {
+		Pageable p = new PageRequest(page, size);
+		map.addAttribute("list", userDao.findAll(p));
+		map.addAttribute("page", page);
+		map.addAttribute("sum", 1);
 		return "user/usertable";
 	}
 

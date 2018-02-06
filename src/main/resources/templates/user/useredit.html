@@ -5,7 +5,7 @@
 <style type="text/css">
 table.altrowstable {
 	font-family: verdana, arial, sans-serif;
-	font-size: 22px;
+	font-size: 20px;
 	color: #333333;
 	border-width: 1px;
 	border-color: #a9c6c9;
@@ -28,12 +28,27 @@ table.altrowstable td {
 	border-color: #a9c6c9;
 }
 
-.oddrowcolor {
-	background-color: #d4e3e5;
+input{
+	font-size: 18px;
+	padding: 5px;
 }
 
-.evenrowcolor {
-	background-color: #c3dde0;
+button {
+	font-family: arial,serif;
+	box-sizing: border-box;
+  	text-align:center;
+  	font-size:16px;
+  	height:30px;
+  	border-radius:1px;
+  	border:1px solid #323f92;
+  	color:#FFFFFF;
+  	margin-top:2%;
+  	background-color:#4f79b0 ;
+  	-web-kit-appearance:none;
+  	-moz-appearance: none;
+  	outline:0;
+  	text-decoration:none;
+  	width:90px;
 }
 </style>
 </head>
@@ -51,8 +66,8 @@ table.altrowstable td {
 			<tr>
 				<th>性别</th>
 				<th><input th:checked="${userBean.sex} == 1" type="radio" name="sex" value="1" /><label
-					style="font-size: 16px">男</label><input th:checked="${userBean.sex} == 0" style="margin-left: 10px"
-					type="radio" name="sex" value="0" /><label style="font-size: 16px">女</label></th>
+					style="font-size: 18px">男</label><input th:checked="${userBean.sex} == 0" style="margin-left: 10px"
+					type="radio" name="sex" value="0" /><label style="font-size: 18px">女</label></th>
 			</tr>
 			<tr>
 				<th>栋数</th>
@@ -83,7 +98,7 @@ table.altrowstable td {
 		});
 
 		function btn_cancel() {
-			window.location.href = "/page/user/table";
+			window.location.href = "/page/user/table/0";
 		}
 
 		function btn_ok(id) {

@@ -18,4 +18,7 @@ public interface pamentRecordDao extends JpaRepository<PamentRecordBean, Long> {
 	
 	@Query("from PamentRecordBean p where p.state=:state")
     List<PamentRecordBean> findAccountByState(@Param("state") Integer state);
+	
+	@Query("from PamentRecordBean p order by p.state")
+    List<PamentRecordBean> findOrderByState();
 }

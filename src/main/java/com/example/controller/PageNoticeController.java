@@ -1,6 +1,9 @@
 package com.example.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -42,59 +45,44 @@ public class PageNoticeController {
 	// 返回用户表信息
 	@RequestMapping(value = "/table", method = RequestMethod.GET)
 	public String table(ModelMap map) {
-		map.addAttribute("list", noticeDao.findAll());
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		List<NoticeBean> list = noticeDao.findAll();
+		for(NoticeBean bean:list) {
+			bean.setDate(format.format(new Date(Long.parseLong(bean.getDate()))));
+		}
+		map.addAttribute("list", list);
 		return "notice/table";
 	}
 
-//	@RequestMapping(value = "/add", method = RequestMethod.GET)
-//	public String addPage() {
-//		return "user/useradd";
-//	}
-//	
-//	@RequestMapping(value = "/edit/{number}", method = RequestMethod.GET)
-//	public String editPage(@PathVariable String number,ModelMap map) {
-//		map.addAttribute("userBean", userDao.findUserByNumber(number));
-//		return "user/useredit";
-//	}
-//
-//	// 添加用户
-//	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
-//	@ResponseBody
-//	public BaseBean<UserBean> addUser(@RequestBody UserBean userBean) {
-//		if (accountDao.findAccountByNumber(userBean.getNumber()) == null) {
-//			AccountBean accountBean = new AccountBean();
-//			accountBean.setNumber(userBean.getNumber());
-//			accountBean.setPwd("111111");
-//			AccountBean save = accountDao.save(accountBean);
-//			return ResultUtils.resultSucceed(userDao.save(userBean));
-//		} else {
-//			return ResultUtils.resultError("用户名已存在");
-//		}
-//	}
-//
-//	// 修改用户
-//	@RequestMapping(value = "/edit/{number}", method = RequestMethod.POST, produces = "application/json")
-//	@ResponseBody
-//	public BaseBean<UserBean> editUser(@PathVariable String number,@RequestBody UserBean userBean) {
-//		UserBean user = userDao.findUserByNumber(number);
-//		user.setName(userBean.getName());
-//		user.setSex(userBean.getSex());
-//		user.setTel(userBean.getTel());
-//		user.setBalance(userBean.getBalance());
-//		user.setDong(userBean.getDong());
-//		user.setDan(userBean.getDan());
-//		user.setHao(userBean.getHao());
-//		return ResultUtils.resultSucceed(userDao.save(user));
-//	}
-//
-//	// 删除用户
-//	@RequestMapping(value = "/detele/{number}", method = RequestMethod.GET)
-//	@ResponseBody
-//	public BaseBean<UserBean> delUser(@PathVariable String number) {
-//		AccountBean a = accountDao.findAccountByNumber(number);
-//		accountDao.delete(a);
-//		UserBean user = userDao.findUserByNumber(number);
-//		userDao.delete(user);
-//		return ResultUtils.resultSucceed("");
-//	}
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
+	public String addPage() {
+		return "notice/add";
+	}
+	
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public String editPage(@PathVariable String id,ModelMap map) {
+		map.addAttribute("noticeBean", noticeDao.findOne(Long.parseLong(id)));
+		return "notice/edit";
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public BaseBean<NoticeBean> addUser(@RequestBody NoticeBean noticeBean) {
+		noticeBean.setDate(new Date().getTime()+"");
+		return ResultUtils.resultSucceed(noticeDao.save(noticeBean));
+	}
+
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public BaseBean<NoticeBean> editUser(@PathVariable String id,@RequestBody NoticeBean noticeBean) {
+		noticeBean.setDate(new Date().getTime()+"");
+		return ResultUtils.resultSucceed(noticeDao.save(noticeBean));
+	}
+
+	@RequestMapping(value = "/detele/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseBean<NoticeBean> delUser(@PathVariable String id) {
+		noticeDao.delete(Long.parseLong(id));
+		return ResultUtils.resultSucceed("");
+	}
 }

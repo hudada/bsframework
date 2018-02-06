@@ -15,10 +15,10 @@ table.altrowstable th {
 	border-width: 1px;
 	padding: 8px;
 	max-width:600px;
-	min-width:150px;
+	min-width:110px;
 	table-layout:auto;
-	border-style: solid;
 	font-family: serif;
+	border-style: solid;
 	border-color: #4f79b0;
 }
 
@@ -62,33 +62,25 @@ button {
 	<div style=" margin-top: 30px; margin-left: 50px">
 		<table class="altrowstable" id="alternatecolor">
 			<tr>
-				<th>缴费业主账号</th>
-				<th>金额</th>
-				<th>类别</th>
-				<th>是否缴纳</th>
-				<th>时间</th>
+				<th>内容</th>
+				<th>回复者</th>
+				<th>回复时间</th>
 				<th>操作</th>
 			</tr>
-			<tr th:each="pament:${list}">
-				<th th:text="${pament.number}">number</th>
-				<th th:text="${pament.amount}">amount</th>
-				<th th:switch="${pament.type}"><label th:case="0">水费</label> <label
-					th:case="1">电费</label> <label th:case="2">燃气费</label> <label
-					th:case="3">停车费</label> <label th:case="4">物管费</label></th>
-				<th th:switch="${pament.state}"><label th:case="0">否</label> <label
-					th:case="1">是</label></th>
-				<th th:text="${pament.date}">
-				</th>
+			<tr th:each="reply:${list}">
+				<th th:text="${reply.info}"></th>
+				<th th:text="${reply.number}"></th>
+				<th th:text="${reply.date}"></th>
 				<th>
-					<a th:if="${pament.state} == 0" th:onclick="'javascript:a_delete(\''+${pament.id}+'\')'">删除</a></th>
+				 <a th:onclick="'javascript:a_delete(\''+${reply.id}+'\')'">删除</a></th>
 			</tr>
 		</table>
 	</div>
 	<div id="div_action"
 		style="float: left; margin-top: 30px; margin-left: 50px; width: 500px;">
-		<a style="float: left;">上一页&nbsp;</a> <label style="float: left;">1</label>
-		<a style="float: left;">&nbsp;下一页</a>
-		<button onclick="btn_add()" style="float: right;">新增</button>
+		<a style="float: left;">上一页&nbsp;&nbsp;</a> <label style="float: left;">1</label>
+		<a style="float: left;">&nbsp;&nbsp;下一页</a>
+		<button onclick="btn_back()" style="float: right;">返回</button>
 	</div>
 
 	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
@@ -116,21 +108,22 @@ button {
 			var tab_w = $("#alternatecolor").width();
 			$("#div_action").css("width", tab_w);
 		});
-
-		function btn_add() {
-			window.location.href = "/page/record/add";
-		}
-
-		function a_delete(id) {
-			if (confirm("是否确认删除")) {
-				$.get("/page/record/detele/" + id, function(obj) {
-					if (obj.code == 0) {
-						window.location.href = "/page/record/table";
-					} else {
+		
+		
+		function a_delete(id){
+			if(confirm("是否确认删除")){
+				$.get("/page/reply/detele/"+id,function(obj){
+					if(obj.code == 0){
+						window.location.reload(); 
+					}else{
 						alert("删除失败");
 					}
 				});
 			}
+		}
+		
+		function btn_back(){
+			window.location.href = "/page/forum/table";
 		}
 	</script>
 </body>

@@ -7,25 +7,26 @@ table.altrowstable {
 	font-size: 18px;
 	color: #333333;
 	border-width: 1px;
-	border-color: #a9c6c9;
+	border-color: #4f79b0;
 	border-collapse: collapse;
 }
 
 table.altrowstable th {
 	border-width: 1px;
 	padding: 8px;
-	max-width:600px;
-	min-width:100px;
-	table-layout:auto;
+	max-width: 600px;
+	min-width: 110px;
+	table-layout: auto;
+	font-family: serif;
 	border-style: solid;
-	border-color: #a9c6c9;
+	border-color: #4f79b0;
 }
 
 table.altrowstable td {
 	border-width: 1px;
 	padding: 8px;
 	border-style: solid;
-	border-color: #a9c6c9;
+	border-color: #4f79b0;
 }
 
 .oddrowcolor {
@@ -33,12 +34,33 @@ table.altrowstable td {
 }
 
 .evenrowcolor {
-	background-color: #c3dde0;
+	background-color: #d4e3e5;
+}
+
+a:hover {
+	color: #326f92;
+}
+
+button {
+	font-family: arial, serif;
+	box-sizing: border-box;
+	text-align: center;
+	font-size: 15px;
+	height: 28px;
+	border-radius: 2px;
+	border: 1px solid #4f79b0;
+	color: #FFFFFF;
+	background-color: #4f79b0;
+	-web-kit-appearance: none;
+	-moz-appearance: none;
+	outline: 0;
+	text-decoration: none;
+	width: 130px;
 }
 </style>
 </head>
 <body>
-	<div style="float: left; margin-top: 30px; margin-left: 50px">
+	<div style="margin-top: 30px; margin-left: 50px">
 		<table class="altrowstable" id="alternatecolor">
 			<tr>
 				<th>账号</th>
@@ -59,19 +81,21 @@ table.altrowstable td {
 				<th th:text="${user.Dan}">Dan单元</th>
 				<th th:text="${user.Hao}">Hao号</th>
 				<th><a th:onclick="'javascript:a_edit(\''+${user.number}+'\')'">修改</a>
-				 <a th:onclick="'javascript:a_delete(\''+${user.number}+'\')'">删除</a></th>
+					<a th:onclick="'javascript:a_delete(\''+${user.number}+'\')'">删除</a></th>
 			</tr>
 		</table>
 	</div>
 	<div id="div_action"
 		style="float: left; margin-top: 30px; margin-left: 50px; width: 500px;">
-		<a style="float: left;">上一页</a> <label style="float: left;">1</label>
-		<a style="float: left;">下一页</a>
+		<a onclick="a_pre()" style="float: left;">上一页&nbsp;&nbsp;</a> <label
+			id="lb_page" style="float: left;" ></label> <a
+			onclick="a_next()" style="float: left;">&nbsp;&nbsp;下一页</a>
 		<button onclick="btn_add()" style="float: right;">新增</button>
 	</div>
 
 	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
-	<script type="text/javascript">
+	<script th:inline="javascript" type="text/javascript">
+		var curPage  = /*[[${page}]]*/;
 		function altRows(id) {
 			if (document.getElementsByTagName) {
 
@@ -94,25 +118,49 @@ table.altrowstable td {
 			altRows('alternatecolor');
 			var tab_w = $("#alternatecolor").width();
 			$("#div_action").css("width", tab_w);
+			
+			var page = parseInt(curPage) + parseInt(1);
+			$("#lb_page").html(page);
 		});
-		
-		function btn_add(){
+
+		function btn_add() {
 			window.location.href = "/page/user/add";
 		}
-		
-		function a_edit(id){
-			window.location.href = "/page/user/edit/"+id;
+
+		function a_edit(id) {
+			window.location.href = "/page/user/edit/" + id;
 		}
-		function a_delete(id){
-			if(confirm("是否确认删除")){
-				$.get("/page/user/detele/"+id,function(obj){
-					if(obj.code == 0){
-						window.location.href = "/page/user/table";
-					}else{
+		function a_delete(id) {
+			if (confirm("是否确认删除")) {
+				$.get("/page/user/detele/" + id, function(obj) {
+					if (obj.code == 0) {
+						window.location.href = "/page/user/table/0";
+					} else {
 						alert("删除失败");
 					}
 				});
 			}
+		}
+
+		function a_pre() {
+			var page = $("#lb_page").html();
+			if (page == 1) {
+				alert("当前为第一页")
+				return
+
+			}
+			page = parseInt(curPage) - parseInt(1);
+			window.location.href = "/page/user/table/" + page;
+		}
+
+		function a_next() {
+			var page = $("#lb_page").html();
+			if(page == /*[[${sum}]]*/){
+				alert("当前为最后页")
+				return
+			}
+			page = parseInt(curPage) + parseInt(1);
+			window.location.href = "/page/user/table/" + page;
 		}
 	</script>
 </body>

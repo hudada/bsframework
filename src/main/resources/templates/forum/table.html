@@ -15,10 +15,10 @@ table.altrowstable th {
 	border-width: 1px;
 	padding: 8px;
 	max-width:600px;
-	min-width:150px;
+	min-width:110px;
 	table-layout:auto;
-	border-style: solid;
 	font-family: serif;
+	border-style: solid;
 	border-color: #4f79b0;
 }
 
@@ -59,36 +59,32 @@ button {
 </style>
 </head>
 <body>
-	<div style=" margin-top: 30px; margin-left: 50px">
+	<div style="margin-top: 30px; margin-left: 50px">
 		<table class="altrowstable" id="alternatecolor">
 			<tr>
-				<th>缴费业主账号</th>
-				<th>金额</th>
-				<th>类别</th>
-				<th>是否缴纳</th>
-				<th>时间</th>
+				<th>标题</th>
+				<th>内容</th>
+				<th>发布者</th>
+				<th>回复</th>
+				<th>发布时间</th>
 				<th>操作</th>
 			</tr>
-			<tr th:each="pament:${list}">
-				<th th:text="${pament.number}">number</th>
-				<th th:text="${pament.amount}">amount</th>
-				<th th:switch="${pament.type}"><label th:case="0">水费</label> <label
-					th:case="1">电费</label> <label th:case="2">燃气费</label> <label
-					th:case="3">停车费</label> <label th:case="4">物管费</label></th>
-				<th th:switch="${pament.state}"><label th:case="0">否</label> <label
-					th:case="1">是</label></th>
-				<th th:text="${pament.date}">
-				</th>
+			<tr th:each="forum:${list}">
+				<th th:text="${forum.title}"></th>
+				<th th:text="${forum.info}"></th>
+				<th th:text="${forum.number}"></th>
+				<th th:inline="text">[[${forum.count}]]条回复
+				<a th:if="${forum.count}>0" th:href="@{'/page/reply/table/'+${forum.id}}">点击查看</a></th>
+				<th th:text="${forum.date}"></th>
 				<th>
-					<a th:if="${pament.state} == 0" th:onclick="'javascript:a_delete(\''+${pament.id}+'\')'">删除</a></th>
+				 <a th:onclick="'javascript:a_delete(\''+${forum.id}+'\')'">删除</a></th>
 			</tr>
 		</table>
 	</div>
 	<div id="div_action"
 		style="float: left; margin-top: 30px; margin-left: 50px; width: 500px;">
-		<a style="float: left;">上一页&nbsp;</a> <label style="float: left;">1</label>
-		<a style="float: left;">&nbsp;下一页</a>
-		<button onclick="btn_add()" style="float: right;">新增</button>
+		<a style="float: left;">上一页&nbsp;&nbsp;</a> <label style="float: left;">1</label>
+		<a style="float: left;">&nbsp;&nbsp;下一页</a>
 	</div>
 
 	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
@@ -116,17 +112,14 @@ button {
 			var tab_w = $("#alternatecolor").width();
 			$("#div_action").css("width", tab_w);
 		});
-
-		function btn_add() {
-			window.location.href = "/page/record/add";
-		}
-
-		function a_delete(id) {
-			if (confirm("是否确认删除")) {
-				$.get("/page/record/detele/" + id, function(obj) {
-					if (obj.code == 0) {
-						window.location.href = "/page/record/table";
-					} else {
+		
+		
+		function a_delete(id){
+			if(confirm("是否确认删除")){
+				$.get("/page/forum/detele/"+id,function(obj){
+					if(obj.code == 0){
+						window.location.href = "/page/forum/table";
+					}else{
 						alert("删除失败");
 					}
 				});
