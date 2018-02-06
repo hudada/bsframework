@@ -43,7 +43,6 @@ public class PageUserController {
 	private AccountDao accountDao;
 	private int size = 50;
 
-	// 返回用户表信息
 	@RequestMapping(value = "/table/{page}", method = RequestMethod.GET)
 	public String table(@PathVariable int page,ModelMap map) {
 		Pageable p = new PageRequest(page, size);
