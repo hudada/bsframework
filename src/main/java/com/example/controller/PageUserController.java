@@ -50,18 +50,18 @@ public class PageUserController {
 		map.addAttribute("list", userDao.findAll(p));
 		map.addAttribute("page", page);
 		map.addAttribute("sum", 1);
-		return "user/usertable";
+		return "user/table";
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addPage() {
-		return "user/useradd";
+		return "user/add";
 	}
 	
 	@RequestMapping(value = "/edit/{number}", method = RequestMethod.GET)
 	public String editPage(@PathVariable String number,ModelMap map) {
 		map.addAttribute("userBean", userDao.findUserByNumber(number));
-		return "user/useredit";
+		return "user/edit";
 	}
 
 	// 添加用户

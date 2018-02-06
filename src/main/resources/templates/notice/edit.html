@@ -31,6 +31,13 @@ table.altrowstable td {
 input{
 	font-size: 18px;
 	padding: 5px;
+	float: left;
+}
+
+textarea{
+	font-size: 18px;
+	padding: 5px;
+	float: left;
 }
 
 button {
@@ -61,7 +68,9 @@ button {
 			</tr>
 			<tr>
 				<th>内容</th>
-				<th><input th:value="${noticeBean.info}" id="ipt_msg" type="text" placeholder="请输入内容" /></th>
+				<th>
+				<textarea id="ipt_msg" placeholder="请输入内容" style="width:500px;height:100px;" th:text="${noticeBean.info}"></textarea>
+				</th>
 			</tr>
 		</table>
 	</div>
@@ -85,7 +94,7 @@ button {
 
 		function btn_ok(id) {
 			var title = $("#ipt_title").val();
-			var msg = $("#ipt_msg").val();
+			var msg = $("#ipt_msg").html();
 			title = $.trim(title);
 			if (title == "") {
 				alert("标题不能为空")
