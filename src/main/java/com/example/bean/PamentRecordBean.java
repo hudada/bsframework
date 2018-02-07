@@ -17,7 +17,7 @@ public class PamentRecordBean {
 	private int type;
 	private String date;
 	private Double amount;
-	private int state;
+	private int state = 0;
 	
 	public String getNumber() {
 		return number;
