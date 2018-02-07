@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    
+    <head>
+   		<meta charset="utf-8"></meta>
+        <title>物业管理系统v1.0</title>
+        <!-- Bootstrap -->
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" media="screen"/>
+        <link th:href="@{/css/bootstrap-responsive.min.css}" rel="stylesheet" media="screen"/>
+        <link th:href="@{/css/styles.css}" rel="stylesheet" media="screen"/>
+    </head>
+    
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container-fluid">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                     <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/login">物业管理系统v1.0</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav pull-right">
+                            <li class="dropdown">
+                                <a th:inline="text" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> 
+                                <i class="icon-user"></i>你好，[[${name}]]<i class="caret"></i>
+
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a tabindex="-1" href="/logout">退出登录</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span3" id="sidebar">
+                    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+                    	<li>
+                            <a href="#"><span th:text="${count0}" class="badge badge-success pull-right">10</span>用&nbsp;&nbsp;&nbsp;&nbsp;户</a>
+                        </li>
+                        <li >
+                            <a href="/addUser"><i class="icon-chevron-right"></i>新增用户</a>
+                        </li>
+                        <li>
+                            <a href="/userManager"><i class="icon-chevron-right"></i>用户管理</a>
+                        </li>
+                            <li>
+                            <a href="#"><span th:text="${count1}" class="badge badge-success pull-right">32</span>缴&nbsp;&nbsp;&nbsp;&nbsp;费</a>
+                        </li>
+                        <li>
+                            <a href="/addRecord0"><i class="icon-chevron-right"></i>新增水费记录</a>
+                        </li>
+                        <li>
+                            <a href="/addRecord1"><i class="icon-chevron-right"></i>新增电费记录</a>
+                        </li>
+                        <li>
+                            <a href="/addRecord2"><i class="icon-chevron-right"></i>新增燃气费记录</a>
+                        </li>
+                        <li>
+                            <a href="/addRecord3"><i class="icon-chevron-right"></i>新增停车费记录</a>
+                        </li>
+                        <li>
+                            <a href="/addRecord4"><i class="icon-chevron-right"></i>新增物管费记录</a>
+                        </li>
+                        <li>
+                            <a href="/recordManager"><i class="icon-chevron-right"></i>缴费管理</a>
+                        </li>
+                        <li>
+                            <a href="#"><span th:text="${count2}" class="badge badge-info pull-right">27</span>公&nbsp;&nbsp;&nbsp;&nbsp;告</a>
+                        </li>
+                        <li>
+                            <a href="/addNotice"><i class="icon-chevron-right"></i>新增公告</a>
+                        </li>
+                        <li>
+                            <a href="/noticeManager"><i class="icon-chevron-right"></i>公告管理</a>
+                        </li>
+                          <li>
+                            <a href="#"><span th:text="${count3}" class="badge badge-info pull-right">25</span>论&nbsp;&nbsp;&nbsp;&nbsp;坛</a>
+                        </li>
+                        <li>
+                            <a href="/forumManager"><i class="icon-chevron-right"></i>论坛管理</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr/>
+        </div>
+        <!--/.fluid-container-->
+        <script th:src="@{/js/jquery-1.9.1.min.js}"></script>
+        <script th:src="@{/js/bootstrap.min.js}"></script>
+        <script>
+        </script>
+    </body>
+
+</html>

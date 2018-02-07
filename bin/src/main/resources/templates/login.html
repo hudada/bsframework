@@ -10,31 +10,71 @@ body {
 
 .div_root {
 	margin: 0 auto;
-	width: 30%;
+	width: 26%;
 	height: 40%;
-	border: 1px solid #000000;
 	background-color: #FFFFFF
+}
+
+.ipu {
+	font-family: arial;
+	box-sizing: border-box;
+  	text-align:center;
+  	font-size:20px;
+  	height:10%;
+  	border-radius:4px;
+  	border:1px solid #c8cccf;
+  	color:#6a6f77;
+  	margin-bottom:10%;
+  	-web-kit-appearance:none;
+  	-moz-appearance: none;
+  	display:block;
+  	outline:0;
+  	padding:10px;
+  	text-decoration:none;
+  	width:100%;
+}
+
+button {
+	font-family: arial;
+	box-sizing: border-box;
+  	text-align:center;
+  	font-size:20px;
+  	height:10%;
+  	border-radius:4px;
+  	border:1px solid #323f92;
+  	color:#FFFFFF;
+  	background-color:#4f79b0;
+  	margin-bottom:10%;
+  	-web-kit-appearance:none;
+  	-moz-appearance: none;
+  	display:block;
+  	outline:0;
+  	padding:10px;
+  	text-decoration:none;
+  	width:100%;
 }
 
 .h1_top {
 	margin-top: 10%;
+	margin-bottom: 4.5%;
+	color: #323f92;
 }
 
 #lb_tip {
-	color: #FF0000;
+	color: #4f79b0;
 }
 </style>
 </head>
 <body>
-	<h1 class="h1_top">物业管理平台登陆</h1>
+	<h1 class="h1_top">物业管理平台</h1>
 	<div class="div_root">
 		<div>
-			用户名<input id="inp_name" type="text" placeholder="请输入用户名" />
+			<input class="ipu" id="inp_name" type="text" placeholder="请输入账号" />
 		</div>
 		<div>
-			密码<input id="inp_pwd" type="password" placeholder="请输入密码" />
+			<input class="ipu" id="inp_pwd" type="password" placeholder="请输入密码" />
 		</div>
-		<button onclick="login()">登陆</button>
+		<button onclick="login()">登&nbsp;&nbsp;&nbsp;&nbsp;陆</button>
 		<div>
 			<label id="lb_tip"></label>
 		</div>
@@ -46,18 +86,18 @@ body {
 			var pwd = $("#inp_pwd").val();
 			name = $.trim(name);
 			if (name == '') {
-				alert("请输入用户名");
+				alert("请输入账号！");
 				return false;
 			}
 			;
 			pwd = $.trim(pwd);
 			if (pwd == '') {
-				alert("请输入密码");
+				alert("请输入密码!");
 				return false;
 			}
 			;
 			$.ajax({
-				url : "/user/login",
+				url : "/dologin",
 				type : "POST",
 				datatype : "JSON",
 				contentType : "application/json;charset=utf-8",
@@ -65,7 +105,7 @@ body {
 				success : function(obj) {
 					if (obj.code == 0) {
 						alert(obj.message);
-						window.location.href = "/page/";
+						window.location.href = "/";
 					} else {
 						$("#lb_tip").html(obj.message)
 					}

@@ -6,14 +6,12 @@
 <style type="text/css">
 </style>
 </head>
-<body>
 
-	<button onclick="loginOut()">退出登陆</button>
-	<script th:src="@{/js/jquery-3.3.1.min.js}"></script>
-	<script type="text/javascript">
-		function loginOut() {
-			window.location.href = "/page/logout";
-		}
-	</script>
-</body>
+<frameset rows="15%,85%">
+	<frame src="/top" scrolling="no" noresize="noresize" />
+	<frameset cols="10%,90%">
+		<frame src="/left" scrolling="no" noresize="noresize" />
+		<frame name="content" src="" scrolling="no" noresize="noresize" />
+	</frameset>
+</frameset>
 </html>
