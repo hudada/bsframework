@@ -6,33 +6,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 @Entity
-public class UserBean {
+public class InTypeBean {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(unique = true)
-	private String number;
-	private String pwd;
+	private String name;
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getNumber() {
-		return number;
+	public String getName() {
+		return name;
 	}
-	public void setNumber(String number) {
-		this.number = number;
-	}
-	public String getPwd() {
-		return pwd;
-	}
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-
-	
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bean.BaseBean;
 import com.example.bean.UserBean;
+import com.example.dao.InTypeDao;
+import com.example.dao.OutTypeDao;
 import com.example.dao.UserDao;
 import com.example.utils.ResultUtils;
 
@@ -18,11 +20,15 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value = "/api/user")
-public class ApiUserController {
+@RequestMapping(value = "/api/money")
+public class ApiMoneyController {
 
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private InTypeDao inTypeDao;
+	@Autowired
+	private OutTypeDao outTypeDao;
 
 
 	@RequestMapping(value = "/", method = RequestMethod.POST, produces = "application/json")
