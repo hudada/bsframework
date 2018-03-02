@@ -15,6 +15,7 @@ public class CommentBean {
 	private Long uid;
 	private Long time;
 	private String content;
+	private String img;
 
 	public Long getId() {
 		return id;
@@ -54,6 +55,14 @@ public class CommentBean {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 }
